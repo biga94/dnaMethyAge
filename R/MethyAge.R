@@ -17,7 +17,7 @@
 #' @param do_plot
 #' Default: TRUE, whether to visualise the age acceleration results. Only valid 
 #' when age_info is supplied with expected values.
-#' @param inputation
+#' @param imputation
 #' Default: TRUE, whether to make imputation to replace NA with sample mean or 
 #' fixed reference, please refer to help(meanImputation) to know how imputations
 #' are carried out in this function.
@@ -77,7 +77,7 @@
 
 
 methyAge <- function(betas, clock='HorvathS2013', age_info=NA, fit_method='Linear', 
-                     do_plot=TRUE, inputation=TRUE, simple_mode=FALSE, 
+                     do_plot=TRUE, imputation=TRUE, simple_mode=FALSE, 
                      species='Homo sapiens', MM_array=FALSE, use_cores=detectCores()){
   ## prepare clock coefficients
   usable_clocks <- suppressMessages(availableClock())
@@ -115,7 +115,7 @@ methyAge <- function(betas, clock='HorvathS2013', age_info=NA, fit_method='Linea
     } else if(clock %in% c('LuA2023p1', 'LuA2023p2', 'LuA2023p3')){
       if(!MM_array){
         betas <- arrayConverter_EPICtoMM(betas, coefs$Probe[-1])
-        inputation <- FALSE
+        imputation <- FALSE
       }
     }
     ## Free the Y limits in plotting
@@ -140,7 +140,7 @@ methyAge <- function(betas, clock='HorvathS2013', age_info=NA, fit_method='Linea
       warning(paste(c("Found ", length(missing_probe), "out of", length(coefs),
                       "probes missing! They will be assigned with mean values from reference dataset, missing probes are:\n ", missing_probe), collapse=" "))
     }
-    if (inputation){
+    if (imputation){
       ## Mean imputation
       data(list='golden_ref', envir=environment())
       ref_mean <- setNames(golden_ref$Mean, rownames(golden_ref))
